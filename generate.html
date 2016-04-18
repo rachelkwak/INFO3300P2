@@ -13,12 +13,14 @@ var height = 600;
 var width = 800;
 var padding = 50;
 var filename = "testCases.json";
-var data;
 
-var svg = d3.select('#graph').append('svg').width('width', width).height('height', height);
+var svg = d3.select("#graph").append("svg").attr("width", width).attr("height", height);
 
-var xScale = d3.time.scale().range(padding, width-padding);
-var yScale = d3.scale.linear().range(height-padding, padding);
+//this needs to be edited
+var parseDate = d3.time.format("%d-%b-%y").parse;
+
+var xScale = d3.time.scale().range([padding, width-padding]);
+var yScale = d3.scale.linear().range([height-padding, padding]);
 
 var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
 var yAxis = d3.svg.axis().scale(yScale).orient('left');
@@ -27,26 +29,28 @@ var line = d3.svg.line()
 	.x(function(d){return xScale(d.time);})
 	.y(function(d){return yScale(d.rank);});
 
-d3.json(filename, function(error, json){
+d3.json(filename, function(error, data){
 	if (error) return console.warn(error);
-	data = json;
+
+	data.forEach(function(d) {
+        d.time = parseDate(d.time);
+        d.rank = +d.rank;
+    });
 
 xScale.domain(d3.extent(data['ticks'], function(d){return d.time;}));
 yScale.domain(d3.extent(data['ticks'], function(d){return d.rank;}));
 
-svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
 
-svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
+svg.append("g").attr("transform", "translate(0," + (height - padding) + ")").attr("class", "axis")
+.call(xAxis);
+svg.append("g").attr("transform", "translate(" + padding + ",0)").attr("class", "axis")
+.call(yAxis);
 
-svg.append('path').datum(data['ticks'])
+svg.append('path')
 	.attr('class', 'line')
-	.attr('d', line);
+	.attr('d', line(data['ticks']));
 });
+
 
 </script>
 
