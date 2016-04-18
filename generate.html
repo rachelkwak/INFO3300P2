@@ -9,28 +9,41 @@
 <div id="graph"></div>
 
 <script type="text/javascript">
-var svg;
 var height = 600;
 var width = 800;
 var padding = 50;
 var filename = "testCases.json";
-var xScale, yScale;
 var data;
+
+var svg = d3.select('#graph').append('svg').width('width', width).height('height', height);
+
+var xScale = d3.time.scale().range(padding, width-padding);
+var yScale = d3.scale.linear().range(height-padding, padding);
+
+var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+var yAxis = d3.svg.axis().scale(yScale).orient('left');
+
+var line = d3.svg.line()
+	.x(function(d){return xScale(d.time);})
+	.y(function(d){return yScale(d.rank);});
 
 d3.json(filename, function(error, json){
 	if (error) return console.warn(error);
 	data = json;
-	svg = d3.select('#graph').append('svg');
-	var xDomain = d3.extent(data['ticks'], function(d){return d.time;});
-	var yDomain = d3.extent(data['ticks'], function(d){return d.rank;});
-	xScale = d3.time.scale().domain(xDomain).range(padding, width-padding);
-	yScale = d3.scale.linear().domain(yDomain).range(height-padding, padding);
 
-	var line = d3.svg.line()
-	.x(function(d){return xScale(d.time);})
-	.y(function(d){return yScale(d.rank);});
+xScale.domain(d3.extent(data['ticks'], function(d){return d.time;}));
+yScale.domain(d3.extent(data['ticks'], function(d){return d.rank;}));
 
-	svg.selectAll('path').datum(data['ticks'])
+svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+
+svg.append('path').datum(data['ticks'])
 	.attr('class', 'line')
 	.attr('d', line);
 });
