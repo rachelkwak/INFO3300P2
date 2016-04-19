@@ -87,7 +87,25 @@ d3.json("testCases.json", function(error, json){
 
 
 function highlight(){
-	
+//for now, display all graphs. 
+	data.forEach(function(d, i){
+		var id = d.id;
+		var nStars = 0;
+		var rank;
+		//filter out tick values
+		var ticks = d.ticks.filter(function(tick){return xScale(tick.time) <= current});
+		ticks.forEach(function(tick){ 
+			if(xScale(tick.time) == current){rank = tick.rank;}
+			nStars += tick.stars;
+
+		});		
+		console.log(nStars);
+
+		paths[i].datum(ticks).attr("d", line);
+		points[i].attr("cx", current)
+			.attr("cy", yScale(rank))
+			.attr("r", rScale(nStars));
+	});	
 }
 
 
