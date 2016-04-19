@@ -70,7 +70,7 @@ d3.json("testCases.json", function(error, json){
 
 	xScale = d3.time.scale().domain([start, end]).range([padding, width-padding]);
 	yScale = d3.scale.linear().domain([lastRank,1]).range([height-padding, padding]);
-	rScale = d3.scale.linear().domain([0,100]).range([3, 30]);
+	rScale = d3.scale.linear().domain([0,1000]).range([3, 30]);
 
 	line = d3.svg.line()
 	.x(function(d){return xScale(d.time);})
