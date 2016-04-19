@@ -39,6 +39,8 @@ var brush, current;
 //visual elements
 var slider, handle;
 
+var line;
+
 
 var svg = d3.select("#graph").append("svg")
 .attr("width", width)
@@ -70,14 +72,16 @@ d3.json("testCases.json", function(error, json){
 	yScale = d3.scale.linear().domain([lastRank,1]).range([height-padding, padding]);
 	rScale = d3.scale.linear().domain([0,100]).range([3, 30]);
 
-	var line = d3.svg.line()
+	line = d3.svg.line()
 	.x(function(d){return xScale(d.time);})
 	.y(function(d){return yScale(d.rank);});
 
 	data.forEach(function(datum){
-		var path = svg.datum(datum.ticks).append("path").attr("class","line").attr("d", line);
-		var point = svg.append("circle").attr("class", "point").attr("r",rScale(0));
-		paths.push(path);
+		svg.datum(datum.ticks).append("path").attr("class","line").attr("d", line);
+		//initalize highlight
+		var highlighted_path = svg.append("path").attr("class", "line selected");
+		var point = svg.append("circle").attr("class", "point");
+		paths.push(highlighted_path);
 		points.push(point);
 
 	});
