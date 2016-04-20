@@ -21,6 +21,7 @@
 <body>
 <div id="graph"></div>
 <div id="slider"></div>
+<div id="test"></div>
 
 <script type="text/javascript">
 var height = 600;
@@ -39,12 +40,19 @@ var brush, current;
 //visual elements
 var slider, handle;
 
+var start, end;
+
 var line;
+
+var timeDomain=[];
+
 
 
 var svg = d3.select("#graph").append("svg")
 .attr("width", width)
 .attr("height", height);
+
+
 
 d3.json("testCases.json", function(error, json){
 	if (error) return console.warn(error);
@@ -58,10 +66,11 @@ d3.json("testCases.json", function(error, json){
 			tick.time = new Date(tick.time).getTime();
 			tick.stars = +tick.stars;
 			tick.rank = +tick.rank;
+			timeDomain.push(new Date(tick.time));
 		});
 	});
 
-	var start = end = data[0].ticks[0].time;
+	start = end = data[0].ticks[0].time;
 	console.log(data);
 	data[0].ticks.forEach(function(d){
 		if (d.time < start) start = d.time;
@@ -86,8 +95,14 @@ d3.json("testCases.json", function(error, json){
 
 	});
 
-	d3.select('#slider').call(d3.slider().scale(xScale).axis(d3.svg.axis()));
+	console.log(timeDomain);
+
+document.getElementById("test").innerHTML = timeDomain.toString();
+
+	d3.select('#slider').call(d3.slider().scale(d3.time.scale().domain(timeDomain)).axis( d3.svg.axis() ).step(5));
+
 });
+
 
 
 function highlight(){
