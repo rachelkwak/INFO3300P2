@@ -92,7 +92,7 @@ d3.json("testCases.json", function(error, json){
 
 	});
 
-	d3.select('#slider').call(d3.slider().axis(d3.svg.axis()).max(end).min(start).step(300000).on("slide", function(evt, value) {
+	d3.select('#slider').call(d3.slider().axis(d3.svg.axis().tickFormat(function(d) { var format = d3.time.format("%I:%M %p"); return format(new Date(d)); })).max(end).min(start).step(300000).on("slide", function(evt, value) {
 	 		current=xScale(value);
 	 		highlight();	
 	 	}));
