@@ -37,8 +37,6 @@ var xScale, yScale, rScale;
 
 var brush, current;
 
-//visual elements
-var slider, handle;
 
 var start, end;
 
@@ -93,10 +91,6 @@ d3.json("testCases.json", function(error, json){
 		points.push(point);
 
 	});
-
-	//console.log(timeDomain);
-
-	//document.getElementById("test").innerHTML = timeDomain.toString();
 
 	d3.select('#slider').call(d3.slider().axis(d3.svg.axis()).max(end).min(start).step(300000).on("slide", function(evt, value) {
 	 		current=xScale(value);
