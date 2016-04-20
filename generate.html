@@ -44,7 +44,6 @@ var start, end;
 
 var line;
 
-var timeDomain=[];
 
 
 
@@ -66,7 +65,6 @@ d3.json("testCases.json", function(error, json){
 			tick.time = new Date(tick.time).getTime();
 			tick.stars = +tick.stars;
 			tick.rank = +tick.rank;
-			timeDomain.push(new Date(tick.time));
 		});
 	});
 
@@ -85,6 +83,7 @@ d3.json("testCases.json", function(error, json){
 	.x(function(d){return xScale(d.time);})
 	.y(function(d){return yScale(d.rank);});
 
+
 	data.forEach(function(datum){
 		svg.datum(datum.ticks).append("path").attr("class","line").attr("d", line);
 		//initalize highlight
@@ -95,11 +94,15 @@ d3.json("testCases.json", function(error, json){
 
 	});
 
-	console.log(timeDomain);
+	//console.log(timeDomain);
 
-document.getElementById("test").innerHTML = timeDomain.toString();
+	//document.getElementById("test").innerHTML = timeDomain.toString();
 
-	d3.select('#slider').call(d3.slider().scale(d3.time.scale().domain(timeDomain)).axis( d3.svg.axis() ).step(5));
+	d3.select('#slider').call(d3.slider().axis(d3.svg.axis()).max(end).min(start).step(300000).on("slide", function(evt, value) {
+	 		current=xScale(value);
+	 		highlight();	
+	 	}));
+
 
 });
 
