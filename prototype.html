@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style type="text/css">
+		.line {
+		  fill: none;
+		  stroke: #ccc;
+		  stroke-width: 1.5px;
+		}
+
+		.slider .handle {
+		  fill: #fff;
+	
+		  stroke: #000;
+		  stroke-opacity: .5;
+		  stroke-width: 1.25px;
+		  cursor: crosshair;
+		}
+.axis {
+  font: 10px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+		.selected{
+			stroke: red;
+		}
+		.point{
+			fill-opacity: 0.5;
+			fill: #696969;
+		}
+		div.tooltip {   
+		  position: absolute;           
+		  text-align: center;           
+		  width: 60px;                  
+		  height: 28px;                 
+		  padding: 2px;             
+		  font: 12px sans-serif;        
+		  background: lightsteelblue;   
+		  border: 0px;      
+		  border-radius: 8px;           
+		  pointer-events: none;         
+		}
+
+	</style>
+
+</head>
+<body>
+<div id="graph"></div>
+<div id="slider"></div>
+
+<script type="text/javascript">
+var height = 600;
+var width = 800;
+var padding = 50;
+var data; 
+var paths = [];
+var points = [];
+
+var lastRank = 100;
+
+var xScale, yScale, rScale;
+//function to draw line
+var line;
+
+//current being the pixel value of slider location
+var brush, current;
+
+//visual elements
+var slider, handle;
+
+var start, end;
+
+
+var svg = d3.select("#graph").append("svg")
+.attr("width", width)
+.attr("height", height);
+
+
+
+var popup = d3.select("body").append("div")
+	.attr("class", "tooltip")
+	.style("opacity", 0);
+
+
+d3.json("testCases.json", function(error, json){
+	if (error) return console.warn(error);
+
+	data = json.data;
+
+	data.forEach(function(datum){
+		datum.id = +datum.id;
+		datum.ticks.forEach(function(tick){
+			//see if you need to change this
+			tick.time = new Date(tick.time).getTime();
+			tick.stars = +tick.stars;
+			tick.rank = +tick.rank;
+		});
+	});
+
+	start = end = data[0].ticks[0].time;
+	data[0].ticks.forEach(function(d){
+		if (d.time < start) start = d.time;
+		if (d.time > end) end = d.time;
+	});
+
+	xScale = d3.time.scale().domain([start, end]).range([padding, width-padding]).clamp(true);
+	yScale = d3.scale.linear().domain([lastRank,1]).range([height-padding, padding]);
+	rScale = d3.scale.linear().domain([0,1000]).range([3, 30]);
+
+	line = d3.svg.line()
+	.x(function(d){return xScale(d.time);})
+	.y(function(d){return yScale(d.rank);});
+	data.forEach(function(datum){
+		svg.datum(datum.ticks).append("path").attr("class","line").attr("d", line);
+		//initalize highlight
+		var highlighted_path = svg.append("path")
+			.attr("class", "line selected")
+/*			.on("mouseover", function(d){
+				popup.transition().duration(200)
+				.style("opacity", 0.9);
+				popup.html("hi")
+				.style("left", (d3.event.pageX) + "px")
+				.style("top", (d3.event.pageY - 28)+ "px");
+
+			})
+			.on("mouseout", function(d){
+				popup.transition()
+					.delay(1000)
+					.duration(500)
+					.style("opacity", 0);
+			})*/;
+
+		var point = svg.append("circle").attr("class", "point");
+
+		paths.push(highlighted_path);
+		points.push(point);
+
+
+	});
+/*s	 = d3.slider().scale(xScale).axis(d3.svg.axis());
+	slider = d3.select('#slider').call(s);*/
+	var xAxis = d3.svg.axis()
+      .scale(xScale)
+      .orient("bottom")
+      //.tickFormat(function(d) { console.log(d);return d; })
+      .tickSize(0)
+      .tickPadding(12)
+
+	svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + (height - padding/ 2) + ")")
+    .call(xAxis)
+  	.select(".domain")
+  	.select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "halo");
+
+
+	brush = d3.svg.brush()
+    .x(xScale)
+    .extent([start, start])
+    .on("brush", brushed);
+
+    slider = svg.append('g').call(brush);
+
+    handle = slider.append("circle")
+    .attr("class", "handle")
+    .attr("transform", "translate(0," + (height - padding/ 2) + ")")
+    .attr("r", 9);
+
+    slider.selectAll(".extent,.resize").remove();
+
+	slider.select(".background")
+    .attr("height", padding)
+    .attr("width", width-2*padding)
+    .attr("x", padding)
+    .attr("y", height-padding);
+
+var middle = (end-start)/2+start;
+
+slider
+    .call(brush.event)
+  .transition() // gratuitous intro!
+    .duration(750)
+    .call(brush.extent([middle, middle]))
+    .call(brush.event);
+/*	current = xScale(new Date('2016-04-20T12:20:50.005Z').getTime());
+	highlight();*/
+});
+
+function highlight(){
+	//for now, display all graphs. 
+	data.forEach(function(d, i){
+		var id = d.id;
+		var nStars = 0;
+		var rank;
+		var closest = start;
+		//filter out tick values
+		var ticks = d.ticks.filter(function(tick){return xScale(tick.time) <= current});
+		ticks.forEach(function(tick){ 
+			if(Math.abs(xScale(tick.time) - current) < Math.abs(closest - current)){
+				closest = xScale(tick.time);
+				rank = tick.rank;}
+			nStars += tick.stars;
+
+		});		
+		//console.log(nStars);
+		//console.log(rank);
+		paths[i].datum(ticks).attr("d", line);
+		points[i].attr("cx", current)
+			.attr("cy", yScale(rank))
+			.attr("r", rScale(nStars));
+	});
+}
+
+/*slider = d3.slider().min(start).max(end);
+svg.append("g").attr("class", "slider").attr("width", width-2*padding).call(slider);*/
+
+function brushed() {
+	//console.log('reached');
+  	var value = brush.extent()[0];
+  	//console.log(value);
+  
+
+	if (d3.event.sourceEvent) { // not a programmatic event
+		//current = ;
+		value = xScale.invert(d3.mouse(this)[0]);
+		//console.log(value);
+		brush.extent([value, value]);
+		//current = value;
+		//highlight();
+	}
+	current = xScale(value);
+	highlight();
+	handle.attr("cx", xScale(value));
+
+}
+</script>
+</body>
+</html>
