@@ -10,9 +10,6 @@ var data,
     points = [],
     selectedProjects;
 
-//var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S-%Z").parse;
-var parseDate = d3.time.format("%b %Y").parse;
-
 var xScale = d3.time.scale().range([0, width]),
     x2Scale = d3.time.scale().range([0, width]),
     yScale = d3.scale.linear().range([height, 0]),
@@ -87,7 +84,6 @@ d3.json("testCases.json", function(error, json) {
     });
   });  
 
-//fix
   xScale.domain([data[0].started, data[0].end]);
   yScale.domain([lowestRank, 1]);
   x2Scale.domain(xScale.domain());
@@ -97,14 +93,12 @@ d3.json("testCases.json", function(error, json) {
     var path = focus.append("path")
         .datum(datum.hnRanks)
         .attr("class", "line")
-        .attr("d", line)
-        .classed("visible", false);
+        .attr("d", line);
 
     var scaledPath = context.append("path")
         .datum(datum.hnRanks)
         .attr("class", "line")
-        .attr("d", line2)
-        .classed("visible", false);
+        .attr("d", line2);
 
     var point = focus.selectAll("point")
     .data(datum.ghStars)
@@ -115,16 +109,14 @@ d3.json("testCases.json", function(error, json) {
     .attr("cy", function(star){
       return findRank(star.time);
      })
-    .attr("r", 3)
-    .classed("visible", false);
+    .attr("r", 3);
 
     paths.push(path);
     scaledPaths.push(scaledPath);
     points.push(point);
   });
 
-  //add checkbox
-
+  //add checkboxes
   checkbox.selectAll("input").data(data).enter()
   .append("label")
     .attr("for","project")
@@ -135,7 +127,6 @@ d3.json("testCases.json", function(error, json) {
     .attr("value", function(d){return d.id;})
     .attr("onclick", 'clicked(this)');
   
-
   //add axes
   focus.append("g")
       .attr("class", "x axis")
