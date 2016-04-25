@@ -1,0 +1,36 @@
+svg {
+  font: 10px sans-serif;
+}
+
+.line {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+  clip-path: url(#clip);
+}
+
+.line.visible{
+  stroke: red;
+}
+
+.point{
+  opacity: 0;
+}
+
+.point.visible{
+  opacity: 1;
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}

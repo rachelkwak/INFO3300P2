@@ -8,7 +8,10 @@ var data,
     paths = [],
     scaledPaths = [],
     points = [],
-    selectedProjects;
+    //store clustering data
+    centroidData = []
+    pointData = [],
+    clusterElements = [];
 
 var xScale = d3.time.scale().range([0, width]),
     x2Scale = d3.time.scale().range([0, width]),
@@ -61,7 +64,7 @@ d3.json("testCases.json", function(error, json) {
   
   data = json.data;
   var n = 0;
-  var lowestRank = 0;
+  var lowestRank = 5;
 
   data.forEach(function(datum){
     datum.id = n++;
@@ -80,9 +83,10 @@ d3.json("testCases.json", function(error, json) {
       hnRank.rank = +hnRank.rank;
       hnRank.starsIncreased = +hnRank.starsIncreased;
 
-      if (hnRank.rank > lowestRank) lowestRank = hnRank.rank;
+      //if (hnRank.rank > lowestRank) lowestRank = hnRank.rank;
     });
   });  
+  console.log(data);
 
   xScale.domain([data[0].started, data[0].end]);
   yScale.domain([lowestRank, 1]);
@@ -100,6 +104,8 @@ d3.json("testCases.json", function(error, json) {
         .attr("class", "line")
         .attr("d", line2);
 
+    var pointDatum = [];
+
     var point = focus.selectAll("point")
     .data(datum.ghStars)
     .enter()
@@ -107,13 +113,19 @@ d3.json("testCases.json", function(error, json) {
     .attr("class", "point")
     .attr("cx", function(star){return xScale(star.time);})
     .attr("cy", function(star){
-      return findRank(star.time);
+      //bad style, but create and store data about point here:
+      var yCoord = findRank(star.time),
+          d = {x: star.time, y: yScale.invert(yCoord)};
+      pointDatum.push(d);
+      return yCoord;
      })
     .attr("r", 3);
 
     paths.push(path);
     scaledPaths.push(scaledPath);
     points.push(point);
+    centroidData.push([]);
+    pointData.push(pointDatum);
   });
 
   //add checkboxes
@@ -244,4 +256,101 @@ function clicked(selected){
   paths[id].classed("visible", function(){return selected.checked});
   points[id].classed("visible", function(){return selected.checked});
   scaledPaths[id].classed("visible", function(){return selected.checked});
+}
+
+function cluster(threshold, display, id){
+  //create new centroids array
+  var centroids = centroidData[id] = new Array(1);
+  var points = pointData[id];
+
+  var randomPoint = points[Math.floor(Math.random() * points.length)];
+  centroids[0] = { x: randomPoint.x, y: randomPoint.y };
+  var n = iterate(threshold, id);
+  //run iterate
+  while (n > 0){
+    n = iterate(threshold, id);
+  }
+
+  display();
+
+  //the following returns the number of non-empty clusters
+  //we can decide whether we want to keep this or not
+/*  n = 0;
+
+  for(var i = 0; i < centroids.length; i++){
+    for(var j = 0; j < points.length; j++){
+      if (points[j].cluster == i){
+        n++;
+        break;
+      } 
+    }
+  }
+  return n;*/
+}
+
+
+function iterate(threshold, id){
+  //reassign points to clusters
+  var n = 0,
+      points = pointData[id],
+      centroids = centroidData[id];
+
+  points.forEach(function(point){
+    var old = point.cluster;
+    var nearest = centroids[findClosest(point, centroids)];
+    var distance = Math.sqrt( 
+      (nearest.x - point.x) * (nearest.x - point.x) +
+      (nearest.y - point.y) * (nearest.y - point.y)
+    ); 
+    if (distance > threshold){
+      var length = centroids.push({x: point.x, y: point.y});
+      point.cluster = length - 1;
+    }
+    if (old != point.cluster) n++;
+  });
+
+  //recalculate centroids
+  centroids.forEach(function (centroid, i) {
+    var assignedPoints = 
+      points.filter(function (point) { return point.cluster == i; });
+    
+    centroid.x = d3.mean(assignedPoints, function (point) { 
+      //convert to Date object?
+      return point.x; });
+    centroid.y = d3.mean(assignedPoints, function (point) { return point.y; });
+  });
+  
+  return n;
+}
+
+function findClosest(point, centroids){
+  var nearest;
+  var shortestDistance = Number.MAX_VALUE;
+  for (var i = 0; i < centroids.length; i++) {
+    var c = centroids[i];
+    var distance = Math.sqrt( 
+      (c.x - point.x) * (c.x - point.x) +
+      (c.y - point.y) * (c.y - point.y)
+    );
+  
+    if (distance < shortestDistance) {
+      shortestDistance = distance;
+      nearest = i;
+    }
+  }
+  point.cluster = nearest;
+  return nearest;
+}
+
+
+function updateDisplay(id){
+  var centroids = centroidData[id],
+      clusters = clusterElements[id];
+  
+  clusters.data(centroids)
+    .append('circle')
+    .attr('class', 'cluster')
+    .attr("cx", function(d){ return xScale(d.x); })
+    .attr("cy", function(d){ return yScale(d.y); })
+    .attr("r", 5);
 }

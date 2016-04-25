@@ -1,48 +1,17 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-svg {
-  font: 10px sans-serif;
-}
-
-.line {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-  clip-path: url(#clip);
-}
-
-.line.visible{
-  stroke: red;
-}
-
-.point{
-  opacity: 0;
-}
-
-.point.visible{
-  opacity: 1;
-}
-
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.brush .extent {
-  stroke: #fff;
-  fill-opacity: .125;
-  shape-rendering: crispEdges;
-}
-
-</style>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
 <body>
+  <div id="checkbox"></div>
+  <div id="graph"></div>
+  <script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
 
-<div id="checkbox"></div>
-<div id="graph"></div>
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
+
+
+
