@@ -87,6 +87,10 @@ svg {
 
 .cluster{
   fill: red;
+  opacity: 0;
+}
+
+.cluster.visible{
   opacity: 0.5;
 }
 .axis path,
