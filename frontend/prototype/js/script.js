@@ -8,6 +8,7 @@ var data,
     paths = [],
     scaledPaths = [],
     points = [],
+    selectedPaths = [],
     //store clustering data
     centroidData = [],
     pointData = [];
@@ -123,6 +124,7 @@ d3.json("testCases.json", function(error, json) {
     scaledPaths.push(scaledPath);
     points.push(point);
     pointData.push(pointDatum);
+    selectedPaths.push(false);
   });
 
 
@@ -198,10 +200,11 @@ function findRank(time, id){
 function clicked(selected){
 
   var id = selected.value;
+  selectedPaths[id] = selected.checked;
   //highlight visible attributes
-  paths[id].classed("visible", function(){return selected.checked});
-  points[id].classed("visible", function(){return selected.checked});
-  scaledPaths[id].classed("visible", function(){return selected.checked});
+  paths[id].classed("visible", selected.checked);
+  points[id].classed("visible", selected.checked);
+  scaledPaths[id].classed("visible", selected.checked);
 }
 
 function cluster(threshold, id){
@@ -286,3 +289,13 @@ function findClosest(point, centroids){
   return nearest;
 }
 
+function callCluster(){
+  //subject to change
+  var threshold = 10;
+ 
+  selectedPaths.forEach(function(isSelected, i){
+    //call cluster()
+    if (isSelected){cluster(threshold, i);}
+    //remove clusters
+    else{focus.selectAll("#cluster_"+i).data([]).exit().remove();}
+  });
