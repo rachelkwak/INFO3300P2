@@ -129,15 +129,15 @@ d3.json("testCases.json", function(error, json) {
 
 
   //add checkboxes
-  checkbox.selectAll("input").data(data).enter()
-  .append("label")
-    .attr("for","project")
-    .text(function(d){return d.ghName})
-  .append("input")
+  var checkboxes = checkbox.selectAll("input").data(data).enter()
+  checkboxes.append("input")
     .attr("type", "checkbox")
     .attr("name","project")
     .attr("value", function(d){return d.id;})
-    .attr("onclick", 'clicked(this)');
+    .attr("onclick", 'clicked(this)')
+  checkboxes.append("label")
+    .attr("for","project")
+    .text(function(d){return d.ghName});
   
   //add axes
   focus.append("g")
