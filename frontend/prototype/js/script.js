@@ -169,6 +169,8 @@ function brushed() {
   focus.selectAll(".line").attr("d", line);
   //recalculate points
   focus.selectAll(".point").attr("cx", function(d){return xScale(d.time);});
+  //recalulate clusters
+  focus.selectAll(".cluster").attr("cx", function(d){ return xScale(d.x); });
   focus.select(".x.axis").call(xAxis);
 }
 
