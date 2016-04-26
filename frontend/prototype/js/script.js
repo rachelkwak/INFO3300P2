@@ -299,3 +299,4 @@ function callCluster(){
     //remove clusters
     else{focus.selectAll("#cluster_"+i).data([]).exit().remove();}
   });
+} 
