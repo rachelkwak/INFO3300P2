@@ -9,9 +9,8 @@ var data,
     scaledPaths = [],
     points = [],
     //store clustering data
-    centroidData = []
-    pointData = [],
-    clusterElements = [];
+    centroidData = [],
+    pointData = [];
 
 var xScale = d3.time.scale().range([0, width]),
     x2Scale = d3.time.scale().range([0, width]),
@@ -66,8 +65,8 @@ d3.json("testCases.json", function(error, json) {
   var n = 0;
   var lowestRank = 5;
 
-  data.forEach(function(datum){
-    datum.id = n++;
+  data.forEach(function(datum, index){
+    datum.id = index;
     datum.started = new Date(datum.started);
     datum.end = new Date(datum.end);
     datum.startStar = +datum.startStar;
@@ -86,14 +85,13 @@ d3.json("testCases.json", function(error, json) {
       //if (hnRank.rank > lowestRank) lowestRank = hnRank.rank;
     });
   });  
-  console.log(data);
 
   xScale.domain([data[0].started, data[0].end]);
   yScale.domain([lowestRank, 1]);
   x2Scale.domain(xScale.domain());
   y2Scale.domain(yScale.domain());
 
-  data.forEach(function(datum){
+  data.forEach(function(datum, index){
     var path = focus.append("path")
         .datum(datum.hnRanks)
         .attr("class", "line")
@@ -114,7 +112,7 @@ d3.json("testCases.json", function(error, json) {
     .attr("cx", function(star){return xScale(star.time);})
     .attr("cy", function(star){
       //bad style, but create and store data about point here:
-      var yCoord = findRank(star.time),
+      var yCoord = findRank(star.time, index),
           d = {x: star.time, y: yScale.invert(yCoord)};
       pointDatum.push(d);
       return yCoord;
@@ -124,9 +122,9 @@ d3.json("testCases.json", function(error, json) {
     paths.push(path);
     scaledPaths.push(scaledPath);
     points.push(point);
-    centroidData.push([]);
     pointData.push(pointDatum);
   });
+
 
   //add checkboxes
   checkbox.selectAll("input").data(data).enter()
@@ -172,12 +170,9 @@ function brushed() {
   focus.select(".x.axis").call(xAxis);
 }
 
-function findRank(start, end, rankStart, rankEnd, time){
-  var slope = (yScale(rankEnd) - yScale(rankStart))/(xScale(end) - xScale(start));
-  return yScale(rankStart) + slope*xScale(time);
-}
 
-function findRank(time){
+
+function findRank(time, id){
 //Elaine's code
   var difference = Number.MAX_VALUE,
       nearest = 0,
@@ -197,55 +192,6 @@ function findRank(time){
 
   var slope = (yScale(rankEnd) - yScale(rankStart))/(xScale(end) - xScale(start));
   return yScale(rankStart) + slope*xScale(time);
-
-  //Rachel's code
-  /*var smallestDiff = nextSmallestDiff = Number.MAX_SAFE_INTEGER;
-    var smallestTime, nextSmallestTime;
-    
-
-    data.forEach(function(datum){
-      datum.hnRanks.forEach(function(dat){
-      var difference = Math.abs(dat.time-time);
-      if (difference < smallestDiff) {
-        nextSmallestDiff = smallestDiff;
-        nextSmallestTime = smallestTime;
-        smallestDiff = difference;
-        smallestTime = dat.time;
-      }
-      });   
-  });
-
-
-  if(smallestTime > nextSmallestTime){
-    var temp = smallestTime;
-    smallestTime = nextSmallestTime;
-    nextSmallestTime = temp;
-  }
-
-  console.log(smallestTime);
-  console.log(nextSmallestTime);
-
-  var startRank, endRank;
-
-  data.forEach(function(datum){
-    datum.hnRanks.forEach(function(tick){
-      if (tick.time == smallestTime){
-        startRank = tick.rank;
-      } else if (tick.time == nextSmallestTime) {
-        endRank = tick.rank;
-      }
-    });
-  });
-      
-  var slope = (endRank-startRank)/(nextSmallestTime-smallestTime);
-  var b = startRank-slope*smallestTime;
-  console.log(slope);
-  console.log(b);
-
-  var finalRank = slope*time+b;
-  return finalRank;*/
-
-
 }
 
 
@@ -258,36 +204,33 @@ function clicked(selected){
   scaledPaths[id].classed("visible", function(){return selected.checked});
 }
 
-function cluster(threshold, display, id){
+function cluster(threshold, id){
   //create new centroids array
   var centroids = centroidData[id] = new Array(1);
   var points = pointData[id];
-
   var randomPoint = points[Math.floor(Math.random() * points.length)];
-  centroids[0] = { x: randomPoint.x, y: randomPoint.y };
+  centroids[0] = { x: randomPoint.x, y: randomPoint.y};
   var n = iterate(threshold, id);
   //run iterate
   while (n > 0){
     n = iterate(threshold, id);
   }
 
-  display();
+  //filter out empty centroids
+  centroids = centroids.filter(function(c){return c.nElements > 0});
+  var selection = focus.selectAll("#cluster_"+id).data(centroids, function(d){console.log(d);return d.x;});
+  
+  selection.enter()
+    .append('circle')
+    .attr('class', 'cluster')
+    .attr('id','cluster_'+id)
+    .attr("cx", function(d){ return xScale(d.x); })
+    .attr("cy", function(d){ return yScale(d.y); })
+    .attr("r", 5);
 
-  //the following returns the number of non-empty clusters
-  //we can decide whether we want to keep this or not
-/*  n = 0;
+  selection.exit().remove();
 
-  for(var i = 0; i < centroids.length; i++){
-    for(var j = 0; j < points.length; j++){
-      if (points[j].cluster == i){
-        n++;
-        break;
-      } 
-    }
-  }
-  return n;*/
 }
-
 
 function iterate(threshold, id){
   //reassign points to clusters
@@ -318,6 +261,7 @@ function iterate(threshold, id){
       //convert to Date object?
       return point.x; });
     centroid.y = d3.mean(assignedPoints, function (point) { return point.y; });
+    centroid.nElements = assignedPoints.length;
   });
   
   return n;
@@ -342,15 +286,3 @@ function findClosest(point, centroids){
   return nearest;
 }
 
-
-function updateDisplay(id){
-  var centroids = centroidData[id],
-      clusters = clusterElements[id];
-  
-  clusters.data(centroids)
-    .append('circle')
-    .attr('class', 'cluster')
-    .attr("cx", function(d){ return xScale(d.x); })
-    .attr("cy", function(d){ return yScale(d.y); })
-    .attr("r", 5);
-}
