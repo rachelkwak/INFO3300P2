@@ -303,3 +303,7 @@ function callCluster(){
     focus.selectAll("#cluster_"+i).classed("visible", isSelected);
   });
 }
+
+function clearCluster(){
+  focus.selectAll(".cluster").data([]).exit().remove();
+}
