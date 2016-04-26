@@ -129,12 +129,12 @@ d3.json("testCases.json", function(error, json) {
 
 
   //add checkboxes
-  var checkboxes = checkbox.selectAll("input").data(data).enter()
+  var checkboxes = checkbox.selectAll("input").data(data).enter();
   checkboxes.append("input")
     .attr("type", "checkbox")
     .attr("name","project")
     .attr("value", function(d){return d.id;})
-    .attr("onclick", 'clicked(this)')
+    .attr("onclick", 'clicked(this)');
   checkboxes.append("label")
     .attr("for","project")
     .text(function(d){return d.ghName});
@@ -207,6 +207,8 @@ function clicked(selected){
   paths[id].classed("visible", selected.checked);
   points[id].classed("visible", selected.checked);
   scaledPaths[id].classed("visible", selected.checked);
+  focus.selectAll("#cluster_"+id).classed("visible", selected.checked);
+
 }
 
 function cluster(threshold, id){
@@ -231,7 +233,8 @@ function cluster(threshold, id){
     .attr('id','cluster_'+id)
     .attr("cx", function(d){ return xScale(d.x); })
     .attr("cy", function(d){ return yScale(d.y); })
-    .attr("r", 5);
+    .attr("r", 7)
+    .classed('visible', false);
 
   selection.exit().remove();
 
@@ -296,9 +299,7 @@ function callCluster(){
   var threshold = 10;
  
   selectedPaths.forEach(function(isSelected, i){
-    //call cluster()
-    if (isSelected){cluster(threshold, i);}
-    //remove clusters
-    else{focus.selectAll("#cluster_"+i).data([]).exit().remove();}
+    cluster(threshold, i);
+    focus.selectAll("#cluster_"+i).classed("visible", isSelected);
   });
 }
