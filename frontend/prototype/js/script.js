@@ -352,11 +352,17 @@ function onLineHover(selected){
       popup = document.getElementById("popup");
   //if line is not selected, don't do anything
   if (!selectedPaths[id]) return;
+  if (popup.getAttribute("data-projectID") == id) return;
   popup.setAttribute("data-projectID", id);
 
   //initialize bar
-  //barScale.domain([0, d.endStar]);
-  //bar.attr("width", barScale(d.startStar));
+  barScale.domain([0, d.endStar]);
+  
+  bar.transition()
+  .attr("width", barScale(d.startStar))
+  .delay(500)
+  .duration(1000)
+  .ease('cubic-in-out');
 
   //populate the popup
   document.getElementById("title").innerHTML = d.ghName;
