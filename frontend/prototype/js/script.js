@@ -1,8 +1,10 @@
 var margin = {top: 10, right: 10, bottom: 100, left: 40},
     margin2 = {top: 430, right: 10, bottom: 20, left: 40},
-    width = 960 - margin.left - margin.right,
+    width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
-    height2 = 500 - margin2.top - margin2.bottom;
+    height2 = 500 - margin2.top - margin2.bottom,
+    barWidth = 220,
+    barHeight = 20;
 
 var data,
     paths = [],
@@ -16,7 +18,8 @@ var data,
 var xScale = d3.time.scale().range([0, width]),
     x2Scale = d3.time.scale().range([0, width]),
     yScale = d3.scale.linear().range([height, 0]),
-    y2Scale = d3.scale.linear().range([height2, 0]);
+    y2Scale = d3.scale.linear().range([height2, 0]),
+    barScale = d3.scale.linear().range([0, barWidth]);
 
  // xScale.tickFormat("%b %d %I:%M");
   //x2Scale.tickFormat("%b %d %I:%M");
@@ -43,8 +46,6 @@ var svg = d3.select("#graph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
-var checkbox = d3.select("#checkbox");
-
 svg.append("defs").append("clipPath")
     .attr("id", "clip")
   .append("rect")
@@ -58,6 +59,18 @@ var focus = svg.append("g")
 var context = svg.append("g")
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+//create bar
+var barSVG = d3.select("#bar").append("svg").attr("height", barHeight+5).attr("width", barWidth+5);
+var barContainer = barSVG.append("rect")
+.attr("class", "barContainer")
+.attr("height", barHeight)
+.attr("width", barWidth);
+
+var bar = barSVG.append("rect").attr("class", "bar").attr("height", barHeight).attr('width', 0);
+
+
+var checkbox = d3.select("#checkbox");
 
 d3.json("testCases.json", function(error, json) {
   if (error) return console.warn(error);
@@ -79,9 +92,7 @@ d3.json("testCases.json", function(error, json) {
 
     datum.hnRanks.forEach(function(hnRank){
       hnRank.time = new Date(hnRank.time);
-      hnRank.stars = +hnRank.stars;
       hnRank.rank = +hnRank.rank;
-      hnRank.starsIncreased = +hnRank.starsIncreased;
 
       //if (hnRank.rank > lowestRank) lowestRank = hnRank.rank;
     });
@@ -96,7 +107,9 @@ d3.json("testCases.json", function(error, json) {
     var path = focus.append("path")
         .datum(datum.hnRanks)
         .attr("class", "line")
-        .attr("d", line);
+        .attr("d", line)
+        .attr("data-projectID", index)
+        .attr("onmouseover", "onLineHover(this)");
 
     var scaledPath = context.append("path")
         .datum(datum.hnRanks)
@@ -118,7 +131,9 @@ d3.json("testCases.json", function(error, json) {
       pointDatum.push(d);
       return yCoord;
      })
-    .attr("r", 3);
+    .attr("r", 3)
+    .attr("data-projectID", index)
+    .attr("onmouseover", "onPointHover(this)");
 
     paths.push(path);
     scaledPaths.push(scaledPath);
@@ -306,4 +321,62 @@ function callCluster(){
 
 function clearCluster(){
   focus.selectAll(".cluster").data([]).exit().remove();
+}
+
+
+//Create progress bar
+function createBar(id, time){
+  var d = data[id],
+      nStars = d.startStar;
+  //find number of stars
+  d.ghStars.forEach(function(star, i){
+    if (star.time <= time){ nStars++;}
+  });
+  
+  //initialize bar
+  barScale.domain([0, d.endStar]);
+
+  //increase bar width
+  bar.transition()
+  .attr("width", barScale(nStars))
+  .delay(500)
+  .duration(1000)
+  .ease('cubic-in-out');
+
+  return nStars;
+}
+
+function onLineHover(selected){
+  var id = +selected.getAttribute("data-projectID"),
+      d = data[id],
+      popup = document.getElementById("popup");
+  //if line is not selected, don't do anything
+  if (!selectedPaths[id]) return;
+  popup.setAttribute("data-projectID", id);
+
+  //initialize bar
+  //barScale.domain([0, d.endStar]);
+  //bar.attr("width", barScale(d.startStar));
+
+  //populate the popup
+  document.getElementById("title").innerHTML = d.ghName;
+  document.getElementById("title").setAttribute("href", d.ghUrl);
+  document.getElementById("description").innerHTML = d.ghDesc;
+  document.getElementById("comments").setAttribute("href", d.hnLink);
+}
+
+function onPointHover(selected){
+  var id = +selected.getAttribute("data-projectID"),
+      popup = document.getElementById("popup");
+  //if line is not selected, don't do anything
+  if (!selectedPaths[id]) return;
+  if (popup.getAttribute("data-projectID") != id){onLineHover(selected);}
+  var time = xScale.invert(selected.getAttribute("cx"));
+
+  var nStars = createBar(id, time),
+      rank = yScale.invert(selected.getAttribute("cy")); 
+
+   //populate the popup
+   document.getElementById("stars").innerHTML = nStars;  
+   document.getElementById("rank").innerHTML = rank;
 }

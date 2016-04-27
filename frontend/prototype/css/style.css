@@ -93,6 +93,12 @@ svg {
 .cluster.visible{
   opacity: 0.5;
 }
+
+.bar{fill: green; stroke: none;}  
+.barContainer{fill: none; stroke: black;}
+.inline-block{}
+
+
 .axis path,
 .axis line {
   fill: none;
