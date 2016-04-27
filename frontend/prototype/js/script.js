@@ -4,7 +4,8 @@ var margin = {top: 10, right: 10, bottom: 100, left: 40},
     height = 500 - margin.top - margin.bottom,
     height2 = 500 - margin2.top - margin2.bottom,
     barWidth = 220,
-    barHeight = 20;
+    barHeight = 20,
+    labelHeight = 15;
 
 var data,
     paths = [],
@@ -61,7 +62,13 @@ var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 //create bar
-var barSVG = d3.select("#bar").append("svg").attr("height", barHeight+5).attr("width", barWidth+5);
+var barSVG = d3.select("#bar")
+.append("svg")
+.attr("height", barHeight+labelHeight)
+.attr("width", barWidth)
+.append("g");
+
+
 var barContainer = barSVG.append("rect")
 .attr("class", "barContainer")
 .attr("height", barHeight)
@@ -69,6 +76,12 @@ var barContainer = barSVG.append("rect")
 
 var bar = barSVG.append("rect").attr("class", "bar").attr("height", barHeight).attr('width', 0);
 
+var barLabel = barSVG.append("text")
+.attr("class", "barLabel")
+.attr("y", barHeight+(labelHeight))
+.attr("text-anchor", "middle");
+
+var startMark = barSVG.append("line").attr("class", "mark").attr("y1", 0).attr("y2", barHeight);
 
 var checkbox = d3.select("#checkbox");
 
@@ -359,12 +372,17 @@ function onLineHover(selected){
 
   //initialize bar
   barScale.domain([0, d.endStar]);
+  var xPos = barScale(d.startStar);
   
   bar.transition()
-  .attr("width", barScale(d.startStar))
+  .attr("width", xPos)
   .delay(500)
   .duration(1000)
   .ease('cubic-in-out');
+
+  //initialize bar label
+  barLabel.attr("x", xPos).text("start");
+  startMark.attr("x1", xPos).attr("x2", xPos);
 
   //populate the popup
   document.getElementById("title").innerHTML = d.ghName;
