@@ -4,15 +4,16 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="js/page.js"></script>
 </head>
 <body>
   <div id="header">
     <h1>hello!</h1>
-    <button type="button" class="button">Click Me!</button>
-    <button type="button" class="button">Click Me!</button>
-    <button type="button" class="button">Click Me!</button>
-    <button type="button" class="button" onclick="callCluster()">Cluster</button>
-    <button type="button" class="button" onclick="clearCluster()">Clear clusters</button>
+    <button type="button" class="button" onclick="clearCluster();show('text1'); hide('text2');">Main</button>
+    <button type="button" class="button" onclick="callCluster();show('text2'); hide('text1')">Cluster</button>
+    <body onload="hide(['text2'])">
+    <p id="text1">Shows the rank vs time graph. Select GitHub repositories on the side to see the stars associated with the repositories.</p>
+    <p id="text2">This shows the clustering.</p>
   </div>
   <div id="checkbox"></div>
   <div id="graph"></div>
