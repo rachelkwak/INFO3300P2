@@ -147,11 +147,13 @@ d3.json("testCases.json", function(error, json) {
   var checkboxes = checkbox.selectAll("input").data(data).enter();
   checkboxes.append("input")
     .attr("type", "checkbox")
-    .attr("name","project")
+    .attr("id","project")
+    .attr("class", "css-checkbox")
     .attr("value", function(d){return d.id;})
     .attr("onclick", 'clicked(this)');
   checkboxes.append("label")
     .attr("for","project")
+    .attr("class", "css-label")
     .text(function(d){return d.ghName});
   
   //add axes
