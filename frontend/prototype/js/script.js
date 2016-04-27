@@ -264,7 +264,10 @@ function cluster(threshold, id){
     .attr("cx", function(d){ return xScale(d.x); })
     .attr("cy", function(d){ return yScale(d.y); })
     .attr("r", 7)
-    .classed('visible', false);
+    .classed('visible', false)
+    .attr("onmouseover", "onClusterHover(this)")
+    .attr("data-nElements", function(d){return d.nElements;})
+    .attr("data-projectID", id);
 
   selection.exit().remove();
 
@@ -364,7 +367,7 @@ function createBar(id, time){
 function onLineHover(selected){
   var id = +selected.getAttribute("data-projectID"),
       d = data[id],
-      popup = document.getElementById("popup");
+      popup = document.getElementById("main_popup");
   //if line is not selected, don't do anything
   if (!selectedPaths[id]) return;
   if (popup.getAttribute("data-projectID") == id) return;
@@ -393,7 +396,7 @@ function onLineHover(selected){
 
 function onPointHover(selected){
   var id = +selected.getAttribute("data-projectID"),
-      popup = document.getElementById("popup");
+      popup = document.getElementById("main_popup");
   //if line is not selected, don't do anything
   if (!selectedPaths[id]) return;
   if (popup.getAttribute("data-projectID") != id){onLineHover(selected);}
@@ -405,4 +408,22 @@ function onPointHover(selected){
    //populate the popup
    document.getElementById("stars").innerHTML = nStars;  
    document.getElementById("rank").innerHTML = rank;
+}
+
+function onClusterHover(selected){
+  var id = +selected.getAttribute("data-projectID"),
+      time = xScale.invert(+selected.getAttribute('cx'));
+  if (!selectedPaths[id]) return;
+
+  var format = d3.time.format("%a %b %e %Y %H:%M:%S");
+
+  document.getElementById("clusterRank").innerHTML = yScale.invert(+selected.getAttribute('cy'));
+  document.getElementById("clusterTime").innerHTML = format(time);
+  document.getElementById("nElements").innerHTML = selected.getAttribute('data-nElements');
+
+
+}
+
+function formatDate(date){
+
 }
