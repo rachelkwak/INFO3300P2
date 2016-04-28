@@ -85,6 +85,8 @@ var startMark = barSVG.append("line").attr("class", "mark").attr("y1", 0).attr("
 
 var checkbox = d3.select("#checkbox");
 
+var tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity",0);
+
 d3.json("newData.json", function(error, json) {
   if (error) return console.warn(error);
   
@@ -130,7 +132,8 @@ d3.json("newData.json", function(error, json) {
         .attr("class", "line")
         .attr("d", line)
         .attr("data-projectID", index)
-        .attr("onmouseover", "onLineHover(this)");
+        .attr("onmouseover", "onLineHover(this, event)")
+        .attr("onmouseout", "hideToolTip()");
 
     var scaledPath = context.append("path")
         .datum(datum.hnRanks)
@@ -154,6 +157,7 @@ d3.json("newData.json", function(error, json) {
     .attr("r", 3)
     .attr("data-projectID", index)
     .attr("onmouseover", "onPointHover(this)")
+    .attr("onmouseout", "hideToolTip()")
     .attr("style", "display:none;");
 
     paths.push(path);
@@ -248,7 +252,6 @@ function findRank(time, id){
 
 function clicked(selected){
   var display = "display:"+(selected.checked ? "":"none")+";";
-  console.log(selected.checked);
   var id = selected.value;
 
   selectedPaths[id] = selected.checked;
@@ -350,9 +353,7 @@ function findClosest(point, centroids){
   return nearest;
 }
 
-function callCluster(){
-  console.log('called cluster');
-  
+function callCluster(){  
   selectedPaths.forEach(function(isSelected, i){
     var display = "display:"+(isSelected ? "":"none")+";";
     focus.selectAll("#cluster_"+i).attr("style", display);
@@ -361,7 +362,6 @@ function callCluster(){
 }
 
 function clearCluster(){
-  console.log(focus.selectAll('.cluster'));
   focus.selectAll(".cluster").attr("style", "display:none;");
 }
 
@@ -388,10 +388,16 @@ function createBar(id, time){
   return nStars;
 }
 
-function onLineHover(selected){
+function onLineHover(selected, event){
   var id = +selected.getAttribute("data-projectID"),
       d = data[id],
-      popup = document.getElementById("main_popup");
+      popup = document.getElementById("main_popup"),
+      name = d.ghName;
+  
+  //display tooltip
+  showToolTip(name, event);
+
+
   //if line is not selected, don't do anything
   if (!selectedPaths[id]) return;
   if (popup.getAttribute("data-projectID") == id) return;
@@ -445,6 +451,20 @@ function onClusterHover(selected){
   document.getElementById("clusterRank").innerHTML = rank;
   document.getElementById("clusterTime").innerHTML = format(time);
   document.getElementById("nElements").innerHTML = selected.getAttribute('data-nElements');
+}
 
+function showToolTip(name, event){
+  tooltip.transition()
+  .duration(200)
+  .style("opacity", 0.9);
 
+  tooltip.html("<p>"+name+"</p>")
+  .style("left", event.pageX + "px")     
+  .style("top", event.pageY + "px");
+}
+
+function hideToolTip(){
+  tooltip.transition()
+  .duration(1000)
+  .style("opacity", 0);
 }
