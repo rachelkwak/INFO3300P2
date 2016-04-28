@@ -135,3 +135,33 @@ svg {
   transition-duration: 0.4s;
 }
  
+.tg {
+  border-collapse:collapse;
+  border-spacing:0;
+}
+.tg td {
+  overflow:hidden;
+  word-break:normal;
+}
+.tg .tg-lqy6 {
+  text-align:right;
+  height:1px;
+  line-height: 0px;
+}
+.tg .tg-yw4l {
+  vertical-align:top;
+  padding-left:10px;
+}
+.tg .tg-gh39 {
+  line-height: 0px;
+  padding-left:10px;
+}
+.tg .tg-img {
+  vertical-align:top;
+}
+a{
+  color: #C6828C; 
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif; 
+}

@@ -3,7 +3,7 @@ var margin = {top: 10, right: 10, bottom: 100, left: 40},
     width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
     height2 = 500 - margin2.top - margin2.bottom,
-    barWidth = 220,
+    barWidth = 200,
     barHeight = 20,
     labelHeight = 15;
 
