@@ -78,22 +78,16 @@ svg {
 }
 
 .mark{opacity: 1; stroke: white;}
-.point{
-  opacity: 0;
-}
 
-.point.visible{
+.point{
   opacity: 1;
 }
 
 .cluster{
   fill: red;
-  opacity: 0;
-}
-
-.cluster.visible{
   opacity: 0.5;
 }
+
 
 .bar{fill: green; stroke: none;}  
 .barContainer{fill: none; stroke: black;}

@@ -89,14 +89,14 @@ d3.json("newData.json", function(error, json) {
   if (error) return console.warn(error);
   
   data = json.data;
-  var n = 0;
-  var lowestRank = 5;
+  var lowestRank = 100;
 
   data.forEach(function(datum, index){
     datum.id = index;
     datum.started = new Date(datum.started);
     datum.end = new Date(datum.end);
     datum.startStar = +datum.startStar;
+
     datum.endStar = +datum.endStar;
 
     datum.ghStars.forEach(function(ghStar){
@@ -111,7 +111,15 @@ d3.json("newData.json", function(error, json) {
     });
   });  
 
-  xScale.domain([data[0].started, data[0].end]);
+  //find start and end times
+  var start = end = data[0].started;
+  data.forEach(function(d){
+    if (d.started < start) start = d.started;
+    if (d.end > end) end = d.end;
+
+  });
+
+  xScale.domain([start, end]);
   yScale.domain([lowestRank, 1]);
   x2Scale.domain(xScale.domain());
   y2Scale.domain(yScale.domain());
@@ -146,13 +154,18 @@ d3.json("newData.json", function(error, json) {
      })
     .attr("r", 3)
     .attr("data-projectID", index)
-    .attr("onmouseover", "onPointHover(this)");
+    .attr("onmouseover", "onPointHover(this)")
+    .attr("style", "display:none;");
 
     paths.push(path);
     scaledPaths.push(scaledPath);
     points.push(point);
     pointData.push(pointDatum);
     selectedPaths.push(false);
+
+    //for clustering:
+    let threshold = 10000;
+    cluster(threshold, index);
   });
 
 
@@ -210,7 +223,7 @@ function findRank(time, id){
 //Elaine's code
   var difference = Number.MAX_VALUE,
       nearest = 0,
-      arr = data[0].hnRanks;
+      arr = data[id].hnRanks;
 
   for (var i = 0; i < arr.length - 1; i++){
     if (Math.abs(time - arr[i].time) < difference){
@@ -230,21 +243,27 @@ function findRank(time, id){
 
 
 function clicked(selected){
-
+  var display = "display:"+(selected.checked ? "":"none")+";";
+  console.log(selected.checked);
   var id = selected.value;
+
   selectedPaths[id] = selected.checked;
   //highlight visible attributes
   paths[id].classed("visible", selected.checked);
-  points[id].classed("visible", selected.checked);
+  points[id].attr("style", display);
   scaledPaths[id].classed("visible", selected.checked);
-  focus.selectAll("#cluster_"+id).classed("visible", selected.checked);
+  
+  //bad style but whatevs
+  //tab defined in page.js
+  if (tab === "cluster") focus.selectAll("#cluster_"+id).attr("style", display);
 
 }
 
 function cluster(threshold, id){
-  //create new centroids array
+  //create new centroids Array
   var centroids = centroidData[id] = new Array(1);
   var points = pointData[id];
+  if (points.length == 0) return;
   var randomPoint = points[Math.floor(Math.random() * points.length)];
   centroids[0] = { x: randomPoint.x, y: randomPoint.y};
   var n = iterate(threshold, id);
@@ -255,7 +274,7 @@ function cluster(threshold, id){
 
   //filter out empty centroids
   centroids = centroids.filter(function(c){return c.nElements > 0});
-  var selection = focus.selectAll("#cluster_"+id).data(centroids, function(d){console.log(d);return d.x;});
+  var selection = focus.selectAll("#cluster_"+id).data(centroids, function(d){return d.x;});
   
   selection.enter()
     .append('circle')
@@ -264,7 +283,7 @@ function cluster(threshold, id){
     .attr("cx", function(d){ return xScale(d.x); })
     .attr("cy", function(d){ return yScale(d.y); })
     .attr("r", 7)
-    .classed('visible', false)
+    .attr("style", "display:none;")
     .attr("onmouseover", "onClusterHover(this)")
     .attr("data-nElements", function(d){return d.nElements;})
     .attr("data-projectID", id);
@@ -328,17 +347,18 @@ function findClosest(point, centroids){
 }
 
 function callCluster(){
-  //subject to change
-  var threshold = 10;
- 
+  console.log('called cluster');
+  
   selectedPaths.forEach(function(isSelected, i){
-    cluster(threshold, i);
-    focus.selectAll("#cluster_"+i).classed("visible", isSelected);
+    var display = "display:"+(isSelected ? "":"none")+";";
+    focus.selectAll("#cluster_"+i).attr("style", display);
   });
+
 }
 
 function clearCluster(){
-  focus.selectAll(".cluster").data([]).exit().remove();
+  console.log(focus.selectAll('.cluster'));
+  focus.selectAll(".cluster").attr("style", "display:none;");
 }
 
 

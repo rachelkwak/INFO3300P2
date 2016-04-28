@@ -1,3 +1,4 @@
+var tab;
 function show(id) {
     forEach(id, function(id) {
         setStyle(document.getElementById(id), 'display', '');
@@ -24,6 +25,7 @@ function setStyle(el, property, value) {
 }
 
 function clickMain(){
+    tab = 'main';
     clearCluster();
     show('text1'); 
     hide('text2');
@@ -32,6 +34,7 @@ function clickMain(){
 }
 
 function clickCluster(){
+    tab = 'cluster';
     callCluster();
     show('text2'); 
     hide('text1');
