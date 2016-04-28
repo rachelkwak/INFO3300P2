@@ -85,7 +85,7 @@ var startMark = barSVG.append("line").attr("class", "mark").attr("y1", 0).attr("
 
 var checkbox = d3.select("#checkbox");
 
-d3.json("testCases.json", function(error, json) {
+d3.json("newData.json", function(error, json) {
   if (error) return console.warn(error);
   
   data = json.data;
