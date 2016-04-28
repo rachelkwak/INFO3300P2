@@ -6,17 +6,31 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
-  <div id="header">
-    <h1>Hacker News and GitHub Visualization</h1>
-    <button type="button" class="button" onclick="clickMain()">Main</button>
-    <button type="button" class="button" onclick="clickCluster()">Cluster</button>
-    <body onload="hide(['text2'])">
-    <p id="text1">Shows the rank vs time graph. Select GitHub repositories on the side to see the stars associated with the repositories.</p>
-    <p id="text2">This shows the clustering.</p>
-  </div>
-  <div id="checkbox"></div>
-  <div id="graph"></div>
-  <div id="main_popup">
+  
+  <table class="tg">
+  <tr>
+    <th class="tg-031e"></th>
+    <th class="tg-031e">
+    	<div id="header">
+	    <h1>Hacker News and GitHub Visualization</h1>
+	    <button type="button" class="button" onclick="clickMain()">Main</button>
+	    <button type="button" class="button" onclick="clickCluster()">Cluster</button>
+	    <body onload="hide(['text2'])">
+	    <p id="text1">Shows the rank vs time graph. Select GitHub repositories on the side to see the stars associated with the repositories.</p>
+	    <p id="text2">This shows the clustering.</p>
+ 		 </div>
+    </th>
+    <th class="tg-031e"></th>
+  </tr>
+  <tr>
+    <td class="tg-img">
+    	<div id="checkbox"></div>
+    </td>
+    <td class="tg-img">
+    	<div id="graph"></div>
+    </td>
+    <td class="tg-img">
+    	<div id="main_popup">
 
 	<table class="tg">
 	  <tr>
@@ -59,15 +73,6 @@
 	    </td>
 	  </tr>
 	</table>
-    
-
-    
-
-
-		    
-    
-
-    
   </div>
 
   <div id="cluster_popup" >
@@ -76,8 +81,20 @@
     <label>Average Time: </label><p id="clusterTime"></p><br>
     <label>Cluster size: </label><p id="nElements"></p><br>
   </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="tg-031e"></td>
+    <td class="tg-031e"></td>
+    <td class="tg-031e">
+    	<div id="footer"><p>bai</p></div>
+    </td>
+  </tr>
+</table>
+  
+  
 
-  <div id="footer"><p>bai</p></div>
+  
   <script type="text/javascript" src="js/script.js"></script>
   <script src="js/page.js"></script>
 
