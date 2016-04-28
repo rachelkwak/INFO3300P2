@@ -157,15 +157,15 @@ d3.json("newData.json", function(error, json) {
 
 
   //add checkboxes
-  var checkboxes = checkbox.selectAll("input").data(data).enter();
+  var checkboxes = checkbox.selectAll("input").data(data).enter().append("div");
   checkboxes.append("input")
     .attr("type", "checkbox")
-    .attr("id","project")
+    .attr("id",function(d){return d.id;})
     .attr("class", "css-checkbox")
     .attr("value", function(d){return d.id;})
     .attr("onclick", 'clicked(this)');
   checkboxes.append("label")
-    .attr("for","project")
+    .attr("for",function(d){return d.id;})
     .attr("class", "css-label")
     .text(function(d){return d.ghName});
   
