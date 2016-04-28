@@ -164,7 +164,7 @@ d3.json("newData.json", function(error, json) {
 
     //for clustering:
     let threshold = 5000000;
-    cluster(threshold, index);
+    //cluster(threshold, index);
   });
 
 
