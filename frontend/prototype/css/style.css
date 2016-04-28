@@ -81,11 +81,15 @@ svg {
 
 .point{
   opacity: 1;
+  clip-path: url(#clip);
+
 }
 
 .cluster{
   fill: red;
   opacity: 0.75;
+    clip-path: url(#clip);
+
 }
 
 
