@@ -138,7 +138,6 @@ d3.json("newData.json", function(error, json) {
         .attr("d", line2);
 
     var pointDatum = [];
-
     var point = focus.selectAll("point")
     .data(datum.ghStars)
     .enter()
@@ -164,7 +163,7 @@ d3.json("newData.json", function(error, json) {
     selectedPaths.push(false);
 
     //for clustering:
-    let threshold = 10000;
+    let threshold = 5000000;
     cluster(threshold, index);
   });
 
@@ -226,9 +225,13 @@ function findRank(time, id){
       arr = data[id].hnRanks;
 
   for (var i = 0; i < arr.length - 1; i++){
-    if (Math.abs(time - arr[i].time) < difference){
+    
+    let a = Math.abs(time - arr[i].time),
+        b = Math.abs(time - arr[i+1].time);
+
+    if (a < difference  || b < difference){
       nearest = i;
-      difference = Math.abs(time - arr[i].time);
+      difference = (a < b ? a : b);
     }
   }
 
@@ -238,7 +241,8 @@ function findRank(time, id){
       rankEnd = arr[nearest+1].rank;
 
   var slope = (yScale(rankEnd) - yScale(rankStart))/(xScale(end) - xScale(start));
-  return yScale(rankStart) + slope*xScale(time);
+ 
+  return yScale(rankStart) + slope*(xScale(time)-xScale(start));
 }
 
 
@@ -423,7 +427,7 @@ function onPointHover(selected){
   var time = xScale.invert(selected.getAttribute("cx"));
 
   var nStars = createBar(id, time),
-      rank = yScale.invert(selected.getAttribute("cy")); 
+      rank = Math.round(yScale.invert(selected.getAttribute("cy"))); 
 
    //populate the popup
    document.getElementById("stars").innerHTML = nStars;  
@@ -432,18 +436,15 @@ function onPointHover(selected){
 
 function onClusterHover(selected){
   var id = +selected.getAttribute("data-projectID"),
-      time = xScale.invert(+selected.getAttribute('cx'));
+      time = xScale.invert(+selected.getAttribute('cx')),
+      rank = Math.round(yScale.invert(+selected.getAttribute('cy')));
   if (!selectedPaths[id]) return;
 
   var format = d3.time.format("%a %b %e %Y %H:%M:%S");
 
-  document.getElementById("clusterRank").innerHTML = yScale.invert(+selected.getAttribute('cy'));
+  document.getElementById("clusterRank").innerHTML = rank;
   document.getElementById("clusterTime").innerHTML = format(time);
   document.getElementById("nElements").innerHTML = selected.getAttribute('data-nElements');
 
-
-}
-
-function formatDate(date){
 
 }
