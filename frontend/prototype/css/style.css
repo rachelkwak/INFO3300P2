@@ -168,3 +168,19 @@ a{
   text-transform: uppercase;
   font-family: 'Oswald', sans-serif; 
 }
+
+div.tooltip {   
+  font-family: 'Oswald', sans-serif; 
+  position: absolute;           
+  text-align: center;           
+  width: auto;                  
+  height: auto;                 
+  padding: 0px 2px 0px 2px;             
+  font: 12px sans-serif;        
+  background: #C6828C;   
+  border: 0px;      
+  border-radius: 2px;           
+  pointer-events: none; 
+  clip-path: url(#clip);
+
+}
