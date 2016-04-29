@@ -59,29 +59,25 @@ svg {
   fill: white;
 }
 
-
 .line {
   fill: none;
   stroke: #ccc;
   stroke-width: 1.5px;
   clip-path: url(#clip);
+  opacity: 0.3;
 }
 
-.line.visible{
-  stroke: red;
-}
 
 .mark{opacity: 1; stroke: white;}
 
 .point{
-  opacity: 1;
+  opacity: 0.6;
   clip-path: url(#clip);
 
 }
 
 .cluster{
-  fill: red;
-  opacity: 0.75;
+  opacity: 0.80;
     clip-path: url(#clip);
 
 }
@@ -179,7 +175,7 @@ div.tooltip {
   height: auto;                 
   padding: 0px 2px 0px 2px;             
   font: 12px sans-serif;        
-  background: #C6828C;   
+  background: #668692;   
   border: 0px;      
   border-radius: 2px;           
   pointer-events: none; 
