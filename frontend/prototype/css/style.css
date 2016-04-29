@@ -182,3 +182,108 @@ div.tooltip {
   clip-path: url(#clip);
 
 }
+
+/*
+ * Pine's CSS
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+#left {
+  margin-top: 150px;
+  padding-left: 1.4rem;
+}
+
+#mid {
+  padding-left: 2.4rem;
+  max-width: 800px;
+}
+
+#header {
+  min-height: 150px;
+  padding-top: 1.6rem;
+}
+#header h1 {
+  margin: 0;
+  margin-bottom: 2rem;
+}
+
+#right {
+  display: flex;
+  flex-flow: column nowrap;
+
+  flex: 1;
+
+  margin-top: 150px;
+  padding-left: 2.4rem;
+}
+
+#main_popup, #cluster_popup {
+  flex: 4;
+  max-width: 300px;
+}
+
+#main_popup, #cluster_popup {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#main_popup div {
+  margin-bottom: 2rem;
+}
+
+#top-right img {
+  vertical-align: text-bottom;
+}
+
+#top-right a {
+  max-width: 300px;
+}
+
+#top-right p {
+  margin-top: 1rem;
+}
+
+#bar-right {
+  text-align: center;
+}
+
+.mid-right {
+  text-align: right;
+}
+
+.mid-right img {
+  vertical-align: text-bottom;
+  margin-left: 10px;
+  margin-right: 2.8rem;
+}
+
+#text1 {
+  max-width: 600px;
+}
+
+#footer {
+  max-width: 300px;
+}
+
+#footer a {
+  font-size: 1rem;
+  text-transform: none;
+}
+
+#cluster_popup h3 {
+  color: #94A0FD;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  font-size: large;
+  margin-top: 1rem;
+}

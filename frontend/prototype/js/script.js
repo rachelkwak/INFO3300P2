@@ -1,6 +1,6 @@
 var margin = {top: 10, right: 10, bottom: 100, left: 40},
     margin2 = {top: 430, right: 10, bottom: 20, left: 40},
-    width = 600 - margin.left - margin.right,
+    width = 720 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
     height2 = 500 - margin2.top - margin2.bottom,
     barWidth = 200,
@@ -434,7 +434,6 @@ function onLineHover(selected, event){
   document.getElementById("title").innerHTML = d.ghName;
   document.getElementById("title").setAttribute("href", d.ghUrl);
   document.getElementById("description").innerHTML = d.ghDesc;
-  document.getElementById("comments").setAttribute("href", d.hnLink);
 }
 
 function onPointHover(selected){

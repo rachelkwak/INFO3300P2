@@ -8,89 +8,69 @@
 </head>
 <body>
   
-  <table class="tg">
-  <tr>
-    <th class="tg-031e"></th>
-    <th class="tg-031e">
-    	<div id="header">
+  <div id="left">
+    <div id="checkbox"></div>
+  </div>
+
+  <div id="mid">
+    <div id="header">
 	    <h1>Hacker News and GitHub Visualization</h1>
 	    <button type="button" class="button" onclick="clickMain()">Main</button>
 	    <button type="button" class="button" onclick="clickCluster()">Cluster</button>
 	    <body onload="hide(['text2'])">
-	    <p id="text1">Shows the rank vs time graph. Select GitHub repositories on the side to see the stars associated with the repositories.</p>
-	    <p id="text2">This shows the clustering.</p>
+      <p id="text1">
+        Select GitHub repos on the left to follow its change in rank on HN with time.
+        <br>
+        The white dots indicate one star added on GitHub.
+        <br>
+        Drag the slider on the bottom to zoom in on specific time intervals.
+      </p>
+
+      <p id="text2">
+        The big circles indicate the center of each cluster of stars added on GitHub.
+      </p>
  		 </div>
-    </th>
-    <th class="tg-031e"></th>
-  </tr>
-  <tr>
-    <td class="tg-img">
-    	<div id="checkbox"></div>
-    </td>
-    <td class="tg-img">
+
     	<div id="graph"></div>
-    </td>
-    <td class="tg-img">
-    	<div id="main_popup">
-
-	<table class="tg">
-	  <tr>
-	    <td class="tg-img" rowspan="6">
-	    	<img src="img/GitHub-Mark-32px.png" width="30">
-	    </td>
-	    <td class="tg-yw4l" colspan="2">
-	    	<a id="title" href="" target="_blank" width="100">GitHub Repository</a>		 
-	    </td>
-	  </tr>
-	  <tr>
-	    <td class="tg-gh39" colspan="2" width="100">
-	    	<p id="description">Description of GitHub Repository</p>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td class="tg-yw4l" colspan="2" width="100">
-	    	<div id="bar"></div>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td class="tg-lqy6" width="100">
-		      <p id="stars"># stars on GitHub</p>
-	    </td>
-	    <td class="tg-lqy6" width="30">
-	    	<img src="img/star.png" width="20">
-	    </td>
-	  </tr>
-	  <tr>
-	    <td class="tg-lqy6" width="100">
-		      <p id="rank">Rank on Hacker News</p>
-	    </td>
-	    <td class="tg-lqy6">
-	    	<img src="img/hackernewsrank.png" width="20">
-	    </td>
-	  </tr>
-	</table>
   </div>
 
-  <div id="cluster_popup" >
-    <h3>Cluster Data</h3><br>
-    <label>Average Rank:</label><p id="clusterRank"></p><br>
-    <label>Average Time: </label><p id="clusterTime"></p><br>
-    <label>Cluster size: </label><p id="nElements"></p><br>
-  </div>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-031e"></td>
-    <td class="tg-031e"></td>
-    <td class="tg-031e">
-    	<div id="footer"><p>Rachel, Elaine and Pine</p></div>
-    </td>
-  </tr>
-</table>
-  
-  
+  <div id="right">
+    <div id="main_popup">
+      <div id="top-right">
+        <p>
+          <a id="title" href="" target="_blank" width="100">GitHub Repository</a>		 
+        </p>
+      </div>
+      <div>
+        <p id="description">Description of GitHub Repository</p>
+      </div>
+      <div id="bar-right">
+        <div id="bar"></div>
+      </div>
+      <div class="mid-right">
+        <span id="stars">GitHub Stars</span>
+        <img src="img/star.png" width="20">
+      </div>
+      <div class="mid-right">
+        <span id="rank">HN Ranks</span>
+        <img src="img/hackernewsrank.png" width="20">
+      </div>
+    </div>
 
-  
+    <div id="cluster_popup" >
+      <h3>Cluster Data</h3><br>
+      <label>Average Rank:</label><p id="clusterRank"></p><br>
+      <label>Average Time: </label><p id="clusterTime"></p><br>
+      <label>Cluster size: </label><p id="nElements"></p><br>
+    </div>
+
+    <div id="footer">
+      <p>Rachel, Elaine and Pine</p>
+      <p>Data from <a href="https://developer.github.com/v3/">GitHub</a> and <a href="https://news.ycombinator.com">Hacker News</p>
+    </div>
+  </div>
+
+  <script src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
   <script src="js/page.js"></script>
 
