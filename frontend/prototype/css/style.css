@@ -3,12 +3,12 @@
 body{
   font-family: 'Montserrat', sans-serif;
   font-size: 90%;
-  background-color: #33414C;
+  background-color: #204B50;
   color: white;
 }
 
 #header {
-    color:#C6828C;
+    color:#FB5E5E;
     text-align:left;
 }
 #checkbox {
@@ -110,7 +110,7 @@ svg {
 } /* this targets the default scrollbar (compulsory) */
 
 ::-webkit-scrollbar-track {
-      background-color: #b46868;
+      background-color: #6CADAA;
 } /* the new scrollbar will have a flat appearance with the set background color */
  
 ::-webkit-scrollbar-thumb {
@@ -123,13 +123,13 @@ svg {
   color: #33414C;
   font-size: 15px;
   font-family: 'Montserrat', sans-serif;
-  background: #C6828C;
+  background: #668692;
   padding: 10px 20px 10px 20px;
   margin-right: 20px;
 }
 
 .button:hover {
-  background: #D45062;
+  background: #00B5A2;
   transition-duration: 0.4s;
 }
  
@@ -160,11 +160,14 @@ svg {
 .tg .tg-img {
   vertical-align:top;
 }
+
 a{
-  color: #C6828C; 
+  color: #94A0FD; 
   text-decoration: none;
   text-transform: uppercase;
   font-family: 'Oswald', sans-serif; 
+  font-weight: bold;
+  font-size:large;
 }
 
 
