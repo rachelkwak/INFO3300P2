@@ -20,8 +20,7 @@ var xScale = d3.time.scale().range([0, width]),
     x2Scale = d3.time.scale().range([0, width]),
     yScale = d3.scale.linear().range([height, 0]),
     y2Scale = d3.scale.linear().range([height2, 0]),
-    barScale = d3.scale.linear().range([0, barWidth]),
-    colorScale = d3.scale.category10();
+    barScale = d3.scale.linear().range([0, barWidth]);
 
  // xScale.tickFormat("%b %d %I:%M");
   //x2Scale.tickFormat("%b %d %I:%M");
@@ -53,7 +52,6 @@ svg.append("defs").append("clipPath")
   .append("rect")
     .attr("width", width)
     .attr("height", height);
-
 
 var focus = svg.append("g")
     .attr("class", "focus")
@@ -127,7 +125,6 @@ d3.json("newData.json", function(error, json) {
   yScale.domain([lowestRank, 1]);
   x2Scale.domain(xScale.domain());
   y2Scale.domain(yScale.domain());
-  colorScale.domain([0, data.length - 1]);
 
   data.forEach(function(datum, index){
     var path = focus.append("path")
@@ -159,7 +156,7 @@ d3.json("newData.json", function(error, json) {
      })
     .attr("r", 1.5)
     .attr("data-projectID", index)
-    .attr("onmouseover", "onPointHover(this)")
+    .attr("onmouseover", "onPointHover(this, event)")
     .attr("onmouseout", "hideToolTip()")
     .attr("style", "display:none;");
 
@@ -170,7 +167,7 @@ d3.json("newData.json", function(error, json) {
     selectedPaths.push(false);
 
     //for clustering:
-    let threshold = 30000000;
+    let threshold = 5000000;
     cluster(threshold, index);
   });
 
@@ -255,17 +252,13 @@ function findRank(time, id){
 
 function clicked(selected){
   var display = "display:"+(selected.checked ? "":"none")+";";
-  var id = selected.value,
-   color = (selected.checked ? ''+colorScale(id)+'' : "#ccc"),
-   opacity = (selected.checked ? 1 : 0.3),
-   width = (selected.checked? 2.5 : 1.5)+'px';
+  var id = selected.value;
 
   selectedPaths[id] = selected.checked;
   //highlight visible attributes
+  paths[id].classed("visible", selected.checked);
   points[id].attr("style", display);
-  paths[id].style("stroke", color).style("opacity", opacity).style("stroke-width", width);
-  scaledPaths[id].style("stroke", color).style("opacity",opacity);
-
+  scaledPaths[id].classed("visible", selected.checked);
   
   //bad style but whatevs
   //tab defined in page.js
@@ -289,19 +282,18 @@ function cluster(threshold, id){
   //filter out empty centroids
   centroids = centroids.filter(function(c){return c.nElements > 0});
   var selection = focus.selectAll("#cluster_"+id).data(centroids, function(d){return d.x;});
-  let color = colorScale(id);
+  
   selection.enter()
     .append('circle')
     .attr('class', 'cluster')
     .attr('id','cluster_'+id)
     .attr("cx", function(d){ return xScale(d.x); })
     .attr("cy", function(d){ return yScale(d.y); })
-    .attr("r", 6)
+    .attr("r", 7)
     .attr("style", "display:none;")
     .attr("onmouseover", "onClusterHover(this)")
     .attr("data-nElements", function(d){return d.nElements;})
-    .attr("data-projectID", id)
-    .attr("fill", color);
+    .attr("data-projectID", id);
 
   selection.exit().remove();
 
@@ -432,12 +424,12 @@ function onLineHover(selected, event){
   document.getElementById("comments").setAttribute("href", d.hnLink);
 }
 
-function onPointHover(selected){
+function onPointHover(selected, event){
   var id = +selected.getAttribute("data-projectID"),
       popup = document.getElementById("main_popup");
   //if line is not selected, don't do anything
   if (!selectedPaths[id]) return;
-  if (popup.getAttribute("data-projectID") != id){onLineHover(selected);}
+  if (popup.getAttribute("data-projectID") != id){onLineHover(selected, event);}
   var time = xScale.invert(selected.getAttribute("cx"));
 
   var nStars = createBar(id, time),
