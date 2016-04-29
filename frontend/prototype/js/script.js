@@ -15,13 +15,16 @@ var data,
     //store clustering data
     centroidData = [],
     pointData = [];
+var colorRange = ['#D0104C','#17becf','#bcbd22',
+                  '#ff7f0e','#E03C8A','#FB5E5E','#86C166','#94A0FD'
+                  ];
 
 var xScale = d3.time.scale().range([0, width]),
     x2Scale = d3.time.scale().range([0, width]),
     yScale = d3.scale.linear().range([height, 0]),
     y2Scale = d3.scale.linear().range([height2, 0]),
     barScale = d3.scale.linear().range([0, barWidth]),
-    colorScale = d3.scale.category10();
+    colorScale = d3.scale.category10().range(colorRange);
 
  // xScale.tickFormat("%b %d %I:%M");
   //x2Scale.tickFormat("%b %d %I:%M");
@@ -29,6 +32,8 @@ var xScale = d3.time.scale().range([0, width]),
 var xAxis = d3.svg.axis().scale(xScale).orient("bottom"),
     xAxis2 = d3.svg.axis().scale(x2Scale).orient("bottom"),
     yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+
 
 var brush = d3.svg.brush()
     .x(x2Scale)
