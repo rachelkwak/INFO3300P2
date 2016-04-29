@@ -1,0 +1,198 @@
+[
+  {
+    "id": 11546098,
+    "ghName": "amznlabs/ion-java",
+    "ghUrl": "https://github.com/amznlabs/ion-java",
+    "hnTitle": "Amazon open-sources Ion – a binary and text interchangable, typed JSON-superset",
+    "hnLink": "https://github.com/amznlabs/ion-java"
+  },
+  {
+    "id": 11553818,
+    "ghName": "wheresrhys/server-push-polyfill-demo",
+    "ghUrl": "https://github.com/wheresrhys/server-push-polyfill-demo",
+    "hnTitle": "Emulating Server Push with Service Workers",
+    "hnLink": "https://github.com/wheresrhys/server-push-polyfill-demo"
+  },
+  {
+    "id": 11555500,
+    "ghName": "pybind/pybind11",
+    "ghUrl": "https://github.com/pybind/pybind11",
+    "hnTitle": "Pybind11 – Seamless operability between C++11 and Python",
+    "hnLink": "https://github.com/pybind/pybind11"
+  },
+  {
+    "id": 11556964,
+    "ghName": "endofexclusive/greta",
+    "ghUrl": "https://github.com/endofexclusive/greta",
+    "hnTitle": "FPGA expansion board for the Amiga 500: SDRAM, microSD mass storage and Ethernet",
+    "hnLink": "https://github.com/endofexclusive/greta"
+  },
+  {
+    "id": 11558007,
+    "ghName": "imatix/gsl",
+    "ghUrl": "https://github.com/imatix/gsl",
+    "hnTitle": "GSL – a Universal Code Generator",
+    "hnLink": "https://github.com/imatix/gsl"
+  },
+  {
+    "id": 11559093,
+    "ghName": "graphitemaster/moreram",
+    "ghUrl": "https://github.com/graphitemaster/moreram",
+    "hnTitle": "Use OpenGL to get more RAM",
+    "hnLink": "https://github.com/graphitemaster/moreram"
+  },
+  {
+    "id": 11560383,
+    "ghName": "Yelp/elastalert",
+    "ghUrl": "https://github.com/Yelp/elastalert",
+    "hnTitle": "Simple Alerting for the ELK Stack",
+    "hnLink": "https://github.com/Yelp/elastalert"
+  },
+  {
+    "id": 11560424,
+    "ghName": "kesara/deepdreamer",
+    "ghUrl": "https://github.com/kesara/deepdreamer",
+    "hnTitle": "Show HN: Command line tool to create Google's deep dreames",
+    "hnLink": "https://github.com/kesara/deepdreamer"
+  },
+  {
+    "id": 11561521,
+    "ghName": "trueadm/inferno",
+    "ghUrl": "https://github.com/trueadm/inferno",
+    "hnTitle": "Inferno – a React-like JavaScript UI library with blazing-fast performance",
+    "hnLink": "https://github.com/trueadm/inferno"
+  },
+  {
+    "id": 11562281,
+    "ghName": "containership/quarry",
+    "ghUrl": "https://github.com/containership/quarry",
+    "hnTitle": "Quarry: dynamic DNS server with swappable back ends and CRUD api",
+    "hnLink": "https://github.com/containership/quarry"
+  },
+  {
+    "id": 11562512,
+    "ghName": "tschw/angler.js",
+    "ghUrl": "https://github.com/tschw/angler.js",
+    "hnTitle": "Angler.js – an anaglyph encoder library for the web",
+    "hnLink": "https://github.com/tschw/angler.js"
+  },
+  {
+    "id": 11563532,
+    "ghName": "nerves-project/nerves_system_br",
+    "ghUrl": "https://github.com/nerves-project/nerves_system_br",
+    "hnTitle": "Platform infrastructure for embedded Erlang/OTP, Elixir and LFE projects",
+    "hnLink": "https://github.com/nerves-project/nerves_system_br"
+  },
+  {
+    "id": 11564156,
+    "ghName": "google/agera",
+    "ghUrl": "https://github.com/google/agera",
+    "hnTitle": "Agera – Reactive Programming for Android",
+    "hnLink": "https://github.com/google/agera"
+  },
+  {
+    "id": 11564313,
+    "ghName": "kay-is/react-from-zero",
+    "ghUrl": "https://github.com/kay-is/react-from-zero",
+    "hnTitle": "Show HN: React without WebPack",
+    "hnLink": "https://github.com/kay-is/react-from-zero"
+  },
+  {
+    "id": 11565720,
+    "ghName": "reverse-shell/routersploit",
+    "ghUrl": "https://github.com/reverse-shell/routersploit",
+    "hnTitle": "RouterSploit – Router Exploitation Framework",
+    "hnLink": "https://github.com/reverse-shell/routersploit"
+  },
+  {
+    "id": 11569633,
+    "ghName": "zzrotdesign/docker-clean",
+    "ghUrl": "https://github.com/zzrotdesign/docker-clean",
+    "hnTitle": "Docker-Clean: A script that cleans docker containers, images, and volumes",
+    "hnLink": "https://github.com/zzrotdesign/docker-clean"
+  },
+  {
+    "id": 11569857,
+    "ghName": "guillaumebort/scasm",
+    "ghUrl": "https://github.com/guillaumebort/scasm",
+    "hnTitle": "Writing a dynamic x86_64 assembler in Scala",
+    "hnLink": "https://github.com/guillaumebort/scasm"
+  },
+  {
+    "id": 11570940,
+    "ghName": "jlpc/xoutputd",
+    "ghUrl": "https://github.com/jlpc/xoutputd",
+    "hnTitle": "Show HN: Change screen layout when connecting/disconnecting monitors",
+    "hnLink": "https://github.com/jlpc/xoutputd"
+  },
+  {
+    "id": 11572270,
+    "ghName": "SpiderOak/Encryptr",
+    "ghUrl": "https://github.com/SpiderOak/Encryptr",
+    "hnTitle": "SpiderOak Encryptr – Zero-Knowledge Password Syncing",
+    "hnLink": "https://github.com/SpiderOak/Encryptr"
+  },
+  {
+    "id": 11572516,
+    "ghName": "cisco/ChezScheme",
+    "ghUrl": "https://github.com/cisco/ChezScheme",
+    "hnTitle": "Chez Scheme is now free",
+    "hnLink": "https://github.com/cisco/ChezScheme"
+  },
+  {
+    "id": 11574679,
+    "ghName": "thestonefox/SteamVR_Unity_Toolkit",
+    "ghUrl": "https://github.com/thestonefox/SteamVR_Unity_Toolkit",
+    "hnTitle": "Show HN: A collection of useful items for building SteamVR titles in Unity 5",
+    "hnLink": "https://github.com/thestonefox/SteamVR_Unity_Toolkit"
+  },
+  {
+    "id": 11576527,
+    "ghName": "google/xi-editor",
+    "ghUrl": "https://github.com/google/xi-editor",
+    "hnTitle": "Xi editor: A modern editor with a backend written in Rust",
+    "hnLink": "https://github.com/google/xi-editor"
+  },
+  {
+    "id": 11576540,
+    "ghName": "rqlite/rqlite",
+    "ghUrl": "https://github.com/rqlite/rqlite",
+    "hnTitle": "Show HN: rqlite v2.2.2, replicating SQLite via Raft consensus",
+    "hnLink": "https://github.com/rqlite/rqlite"
+  },
+  {
+    "id": 11576942,
+    "ghName": "uber-common/cpustat",
+    "ghUrl": "https://github.com/uber-common/cpustat",
+    "hnTitle": "Cpustat: high frequency performance measurements for Linux",
+    "hnLink": "https://github.com/uber-common/cpustat"
+  },
+  {
+    "id": 11577585,
+    "ghName": "prakhar1989/type-inference",
+    "ghUrl": "https://github.com/prakhar1989/type-inference#hindley-milner-type-inference",
+    "hnTitle": "Show HN: Hindley-Milner Type Inference Algorithm in OCaml",
+    "hnLink": "https://github.com/prakhar1989/type-inference#hindley-milner-type-inference"
+  },
+  {
+    "id": 11577892,
+    "ghName": "ejcx/passgo",
+    "ghUrl": "https://github.com/ejcx/passgo",
+    "hnTitle": "Show HN: passgo, a command line password manager written in go",
+    "hnLink": "https://github.com/ejcx/passgo"
+  },
+  {
+    "id": 11583183,
+    "ghName": "calebmer/postgraphql",
+    "ghUrl": "https://github.com/calebmer/postgraphql",
+    "hnTitle": "Postgraphql: A GraphQL schema created by reflection over a PostgreSQL schema",
+    "hnLink": "https://github.com/calebmer/postgraphql"
+  },
+  {
+    "id": 11588540,
+    "ghName": "feross/standard",
+    "ghUrl": "https://github.com/feross/standard",
+    "hnTitle": "Proposed JavaScript Standard Style",
+    "hnLink": "https://github.com/feross/standard"
+  }
+]
