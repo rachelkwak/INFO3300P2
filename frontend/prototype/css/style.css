@@ -3,25 +3,19 @@
 body{
   font-family: 'Montserrat', sans-serif;
   font-size: 90%;
-  background-color: #33414C;
+  background-color: #204B50;
   color: white;
 }
 
 #header {
-    color:#C6828C;
+    color:#FB5E5E;
     text-align:left;
-    margin-left:200px;
-    padding:5px;
 }
 #checkbox {
     line-height:30px;
-    width:250px;
-    float:left;
-    padding:5px; 
 }
 #graph {
     float:left;
-    padding:10px; 
 }
 #footer {
     color:white;
@@ -65,30 +59,26 @@ svg {
   fill: white;
 }
 
-
 .line {
   fill: none;
   stroke: #ccc;
   stroke-width: 1.5px;
   clip-path: url(#clip);
+  opacity: 0.3;
 }
 
-.line.visible{
-  stroke: red;
-}
 
 .mark{opacity: 1; stroke: white;}
 
 .point{
-  opacity: 1;
+  opacity: 0.6;
   clip-path: url(#clip);
 
 }
 
 .cluster{
-  fill: red;
-  opacity: 0.65;
-  clip-path: url(#clip);
+  opacity: 0.80;
+    clip-path: url(#clip);
 
 }
 
@@ -116,7 +106,7 @@ svg {
 } /* this targets the default scrollbar (compulsory) */
 
 ::-webkit-scrollbar-track {
-      background-color: #b46868;
+      background-color: #6CADAA;
 } /* the new scrollbar will have a flat appearance with the set background color */
  
 ::-webkit-scrollbar-thumb {
@@ -129,28 +119,32 @@ svg {
   color: #33414C;
   font-size: 15px;
   font-family: 'Montserrat', sans-serif;
-  background: #C6828C;
+  background: #668692;
   padding: 10px 20px 10px 20px;
   margin-right: 20px;
 }
 
 .button:hover {
-  background: #D45062;
+  background: #00B5A2;
   transition-duration: 0.4s;
 }
  
 .tg {
   border-collapse:collapse;
   border-spacing:0;
+
 }
 .tg td {
   overflow:hidden;
   word-break:normal;
+
+  
 }
 .tg .tg-lqy6 {
   text-align:right;
   height:1px;
   line-height: 0px;
+
 }
 .tg .tg-yw4l {
   vertical-align:top;
@@ -162,12 +156,16 @@ svg {
 .tg .tg-img {
   vertical-align:top;
 }
+
 a{
-  color: #C6828C; 
+  color: #94A0FD; 
   text-decoration: none;
   text-transform: uppercase;
   font-family: 'Oswald', sans-serif; 
+  font-weight: bold;
+  font-size:large;
 }
+
 
 div.tooltip {   
   font-family: 'Oswald', sans-serif; 
@@ -177,7 +175,7 @@ div.tooltip {
   height: auto;                 
   padding: 0px 2px 0px 2px;             
   font: 12px sans-serif;        
-  background: #C6828C;   
+  background: #668692;   
   border: 0px;      
   border-radius: 2px;           
   pointer-events: none; 
